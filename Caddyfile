@@ -1,0 +1,13 @@
+# Caddy obtient et renouvelle automatiquement les certificats HTTPS (Let's Encrypt).
+
+www.mohamed-diallo.com {
+	redir https://mohamed-diallo.com{uri} permanent
+}
+
+mohamed-diallo.com {
+	encode zstd gzip
+	request_body {
+		max_size 20MB
+	}
+	reverse_proxy app:3000
+}
