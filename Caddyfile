@@ -9,5 +9,5 @@ mohamed-diallo.com {
 	request_body {
 		max_size 20MB
 	}
-	reverse_proxy app:3000
+	reverse_proxy mohamed-diallo-app:3000
 }

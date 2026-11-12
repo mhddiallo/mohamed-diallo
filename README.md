@@ -8,7 +8,7 @@ Site personnel bilingue (français / anglais) de Mohamed Diallo, avec ses sectio
 | Administration | Payload CMS 3, sur `/admin` |
 | Base de données | PostgreSQL 16 |
 | Carte | Leaflet + contours des pays (world-atlas), sans service de tuiles externe |
-| Hébergement | Docker Compose + Caddy (HTTPS automatique) sur un VPS |
+| Hébergement | Docker Compose sur un VPS, derrière Caddy (HTTPS automatique) |
 | Design | « Latérite » : Bricolage Grotesque (titres), Literata (texte) |
 
 ## Les URL
@@ -85,11 +85,31 @@ nano .env   # renseignez PAYLOAD_SECRET et POSTGRES_PASSWORD (openssl rand -hex 
 
 ### 3. Lancer
 
+Le site rejoint le réseau Docker partagé `web`, par lequel le reverse proxy (Caddy) du serveur l'atteint sous le nom `mohamed-diallo-app:3000`.
+
 ```bash
+docker network create web   # une seule fois par serveur
 docker compose up -d --build
 ```
 
-Caddy obtient le certificat HTTPS tout seul (comptez une minute après la propagation DNS). Ouvrez ensuite `https://mohamed-diallo.com/admin` pour créer votre compte.
+**Sur ce VPS, le HTTPS est assuré par le Caddy partagé** (`/opt/proxy`), qui sert tous les projets du serveur. Son `Caddyfile` contient :
+
+```
+mohamed-diallo.com {
+	encode zstd gzip
+	reverse_proxy mohamed-diallo-app:3000
+}
+
+www.mohamed-diallo.com {
+	redir https://mohamed-diallo.com{uri} permanent
+}
+```
+
+Après une modification : `docker exec proxy caddy reload --config /etc/caddy/Caddyfile`.
+
+**Sur un serveur sans reverse proxy**, utilisez le Caddy fourni : `docker compose --profile caddy up -d --build`.
+
+Le certificat HTTPS est obtenu automatiquement (comptez une minute après la propagation DNS). Ouvrez ensuite `https://mohamed-diallo.com/admin` pour créer votre compte.
 
 ### Mettre à jour le site
 
@@ -113,7 +133,7 @@ Pour automatiser, ajoutez ces deux lignes dans une tâche `cron` quotidienne et 
 
 ### Plusieurs projets sur le même VPS
 
-Caddy peut servir d'autres sites : ajoutez un bloc par domaine dans le `Caddyfile` (par exemple `autre-projet.com { reverse_proxy autre-app:8080 }`) et branchez le conteneur correspondant sur le même réseau Docker.
+Un seul Caddy sert tous les domaines : chaque projet branche son conteneur sur le réseau `web`, et on ajoute un bloc par domaine dans le `Caddyfile` (par exemple `autre-projet.com { reverse_proxy autre-app:8080 }`).
 
 ## Structure du code
 
