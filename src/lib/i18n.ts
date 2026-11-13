@@ -101,6 +101,9 @@ const dictionaries = {
       kinds: { book: 'Livre', film: 'Film', series: 'Série', activity: 'Activité' },
       status: { current: 'En cours', done: 'Terminé', wishlist: 'À venir' },
       empty: 'Rien ici pour le moment.',
+      allYears: 'Tout',
+      undated: 'Sans date',
+      filterByYear: 'Filtrer par année',
     },
     goals: {
       title: 'Objectifs',
@@ -191,6 +194,9 @@ const dictionaries = {
       kinds: { book: 'Book', film: 'Film', series: 'Series', activity: 'Activity' },
       status: { current: 'In progress', done: 'Finished', wishlist: 'Up next' },
       empty: 'Nothing here yet.',
+      allYears: 'All',
+      undated: 'Undated',
+      filterByYear: 'Filter by year',
     },
     goals: {
       title: 'Goals',

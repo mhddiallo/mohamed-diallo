@@ -90,7 +90,7 @@ export const Interests: CollectionConfig = {
       min: 1,
       max: 5,
       label: { fr: 'Note (1 à 5)', en: 'Rating (1 to 5)' },
-      admin: { position: 'sidebar' },
+      admin: { position: 'sidebar', step: 0.5 },
     },
     {
       name: 'date',
