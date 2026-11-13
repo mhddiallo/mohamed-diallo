@@ -14,6 +14,7 @@ type Labels = {
   all: string
   countries: string
   cities: string
+  continents: string
   regionNear: string
   regionWorld: string
   byYear: string
@@ -41,6 +42,7 @@ export function MapExplorer({
   const visible = year ? places.filter((p) => p.year === year) : places
   const countryCount = new Set(visible.map((p) => p.country)).size
   const cityCount = new Set(visible.map(placeKey)).size
+  const continentCount = new Set(visible.map((p) => p.continent).filter(Boolean)).size
 
   // Trips grouped by year (most recent first)
   const byYear = useMemo(() => {
@@ -70,6 +72,12 @@ export function MapExplorer({
             <span>{labels.cities}</span>
             <strong>
               <CountUp value={cityCount} duration={700} />
+            </strong>
+          </div>
+          <div className="stat-card stat-ocre">
+            <span>{labels.continents}</span>
+            <strong>
+              <CountUp value={continentCount} duration={700} />
             </strong>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import type { Place } from '@/components/mapTypes'
-import { countryName, countryNumeric } from './countries'
+import { continentOf, countryName, countryNumeric } from './countries'
 import type { Locale } from './i18n'
 import { payload } from './payload'
 
@@ -17,6 +17,7 @@ export async function getPlaces(locale: Locale): Promise<Place[]> {
     country: d.country,
     countryName: countryName(d.country, locale),
     numeric: countryNumeric(d.country),
+    continent: continentOf(d.country),
     year: d.year,
     lat: d.latitude,
     lng: d.longitude,

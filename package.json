@@ -23,6 +23,7 @@
     "@payloadcms/richtext-lexical": "3.93.0",
     "@payloadcms/translations": "3.93.0",
     "@payloadcms/ui": "3.93.0",
+    "countries-list": "^3.4.1",
     "cross-env": "^7.0.3",
     "dotenv": "16.4.7",
     "graphql": "^16.8.1",

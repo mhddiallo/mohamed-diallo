@@ -901,6 +901,10 @@ main {
 .stat-baobab {
   background: var(--baobab);
 }
+.stat-ocre {
+  background: var(--ocre);
+  color: var(--nuit);
+}
 @media (max-width: 700px) {
   .map-head {
     flex-direction: column;

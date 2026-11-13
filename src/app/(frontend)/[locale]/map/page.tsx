@@ -35,6 +35,7 @@ export default async function MapPage({ params }: Props) {
         all: dict.map.all,
         countries: dict.map.countries,
         cities: dict.map.cities,
+        continents: dict.map.continents,
         regionNear: dict.map.regionNear,
         regionWorld: dict.map.regionWorld,
         byYear: dict.map.byYear,

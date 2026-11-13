@@ -1,3 +1,4 @@
+import { countries as countryData } from 'countries-list'
 import countries from 'i18n-iso-countries'
 import enLocale from 'i18n-iso-countries/langs/en.json'
 import frLocale from 'i18n-iso-countries/langs/fr.json'
@@ -25,3 +26,7 @@ export const countryOptions = () => {
       label: { fr: fr[code], en: en[code] ?? fr[code] },
     }))
 }
+
+/** Continent code (AF, EU, AS, NA, SA, OC, AN) of a country, e.g. "SN" -> "AF". */
+export const continentOf = (code: string): string | undefined =>
+  (countryData as Record<string, { continent?: string }>)[code]?.continent
