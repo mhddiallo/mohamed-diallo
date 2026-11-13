@@ -1402,3 +1402,48 @@ html.anim .goal-summary:not(.is-visible) .bar span {
 html.anim .floating-dots span {
   animation: float-dot linear infinite;
 }
+
+/* Background constellation (all pages) */
+.frame {
+  position: relative;
+}
+.particle-network {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.frame > main,
+.frame > .site-footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* Map: city name on hover */
+.leaflet-tooltip.city-tooltip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--nuit);
+  color: var(--sable);
+  font-family: var(--display);
+  box-shadow: 0 10px 24px -12px rgb(0 0 0 / 0.6);
+}
+.leaflet-tooltip.city-tooltip strong {
+  font-size: 0.95rem;
+  font-weight: 750;
+  letter-spacing: -0.01em;
+}
+.leaflet-tooltip.city-tooltip span {
+  font-size: 0.7rem;
+  opacity: 0.75;
+}
+.leaflet-tooltip-top.city-tooltip::before {
+  border-top-color: var(--nuit);
+}
+.leaflet-interactive.city-dot {
+  cursor: pointer;
+}

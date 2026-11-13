@@ -5,6 +5,7 @@ import type { ReactNode } from 'react'
 import { AltLinkProvider } from '@/components/AltLink'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { Nav } from '@/components/Nav'
+import { ParticleNetwork } from '@/components/motion/ParticleNetwork'
 import { RevealObserver } from '@/components/motion/RevealObserver'
 import { defaultLocale, href, isLocale, locales, t } from '@/lib/i18n'
 import { payload } from '@/lib/payload'
@@ -64,6 +65,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             {locale === 'fr' ? 'Aller au contenu' : 'Skip to content'}
           </a>
           <div className="frame">
+            <ParticleNetwork />
             <header className="site-header">
               <Link href={href(locale)} className="brand">
                 <span className="monogram" aria-hidden>

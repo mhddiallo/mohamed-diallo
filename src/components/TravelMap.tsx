@@ -4,7 +4,7 @@ import 'leaflet/dist/leaflet.css'
 import type { Feature, FeatureCollection, Geometry } from 'geojson'
 import type { GeoJSON as LeafletGeoJSON } from 'leaflet'
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
-import { CircleMarker, GeoJSON, MapContainer, Pane, useMap } from 'react-leaflet'
+import { CircleMarker, GeoJSON, MapContainer, Pane, Tooltip, useMap } from 'react-leaflet'
 import { feature } from 'topojson-client'
 import type { Topology } from 'topojson-specification'
 import { placeKey, regionBounds, type Place, type Region } from './mapTypes'
@@ -236,7 +236,16 @@ export default function TravelMap({
                       fillOpacity: 1,
                     }}
                     eventHandlers={{ click: () => onSelect?.(c) }}
-                  />
+                  >
+                    {!mini && (
+                      <Tooltip direction="top" offset={[0, -8]} className="city-tooltip">
+                        <strong>{c.city}</strong>
+                        <span>
+                          {c.countryName} · {[...new Set(c.years)].sort().join(', ')}
+                        </span>
+                      </Tooltip>
+                    )}
+                  </CircleMarker>
                 </Fragment>
               )
             })}

@@ -31,7 +31,6 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
   return (
     <>
       <section className="hero">
-        <FloatingDots count={40} seed={11} />
         <div className="hero-name">
           {settings.kicker && <span className="kicker">{settings.kicker}</span>}
           <h1 className="hero-title">
