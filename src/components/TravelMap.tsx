@@ -3,7 +3,7 @@
 import 'leaflet/dist/leaflet.css'
 import type { Feature, FeatureCollection, Geometry } from 'geojson'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { CircleMarker, GeoJSON, MapContainer, useMap } from 'react-leaflet'
+import { CircleMarker, GeoJSON, MapContainer, Pane, useMap } from 'react-leaflet'
 import { feature } from 'topojson-client'
 import type { Topology } from 'topojson-specification'
 import { placeKey, regionBounds, type Place, type Region } from './mapTypes'
@@ -39,9 +39,7 @@ const loadWorld = () =>
   (worldCache ??= fetch('/countries-50m.json')
     .then((r) => r.json())
     .then((topo: Topology) =>
-      cleanWorld(
-        feature(topo, topo.objects.countries) as unknown as FeatureCollection<Geometry>,
-      ),
+      cleanWorld(feature(topo, topo.objects.countries) as unknown as FeatureCollection<Geometry>),
     ))
 
 function FitRegion({ region }: { region: Region }) {
@@ -156,26 +154,29 @@ export default function TravelMap({
             interactive={false}
           />
         )}
-        {colors &&
-          cities.map((c) => {
-            const key = placeKey(c)
-            const selected = key === selectedKey
-            return (
-              <CircleMarker
-                key={key}
-                center={[c.lat!, c.lng!]}
-                radius={mini ? 3 : selected ? 9 : 6}
-                interactive={!mini}
-                pathOptions={{
-                  color: colors.markerStroke,
-                  weight: mini ? 1 : 2,
-                  fillColor: colors.marker,
-                  fillOpacity: 1,
-                }}
-                eventHandlers={{ click: () => onSelect?.(c) }}
-              />
-            )
-          })}
+        {/* Cities live in their own pane, always drawn above the countries */}
+        <Pane name="cities" style={{ zIndex: 450 }}>
+          {colors &&
+            cities.map((c) => {
+              const key = placeKey(c)
+              const selected = key === selectedKey
+              return (
+                <CircleMarker
+                  key={key}
+                  center={[c.lat!, c.lng!]}
+                  radius={mini ? 3 : selected ? 9 : 6}
+                  interactive={!mini}
+                  pathOptions={{
+                    color: colors.markerStroke,
+                    weight: mini ? 1 : 2,
+                    fillColor: colors.marker,
+                    fillOpacity: 1,
+                  }}
+                  eventHandlers={{ click: () => onSelect?.(c) }}
+                />
+              )
+            })}
+        </Pane>
       </MapContainer>
     </div>
   )
