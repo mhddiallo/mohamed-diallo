@@ -5,6 +5,8 @@ import { RichText } from '@/components/RichText'
 
 export const dynamic = 'force-dynamic'
 
+const categories = ['experience', 'education', 'certification', 'award'] as const
+
 type Props = { params: Promise<{ locale: Locale }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -35,22 +37,26 @@ export default async function AboutPage({ params }: Props) {
 
         <RichText data={about.content} />
 
-        {about.timeline && about.timeline.length > 0 && (
-          <section className="section">
-            <h2>{dict.about.timeline}</h2>
-            <ol className="timeline">
-              {about.timeline.map((step) => (
-                <li key={step.id}>
-                  <span className="period">{step.period}</span>
-                  <div>
-                    <h3>{step.title}</h3>
-                    {step.description && <p>{step.description}</p>}
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </section>
-        )}
+        {categories.map((category) => {
+          const steps = (about.timeline ?? []).filter((step) => (step.category ?? 'experience') === category)
+          if (steps.length === 0) return null
+          return (
+            <section key={category} className="section">
+              <h2>{dict.about.categories[category]}</h2>
+              <ol className="timeline">
+                {steps.map((step) => (
+                  <li key={step.id}>
+                    <span className="period">{step.period}</span>
+                    <div>
+                      <h3>{step.title}</h3>
+                      {step.description && <p>{step.description}</p>}
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          )
+        })}
       </div>
     </div>
   )

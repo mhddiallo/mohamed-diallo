@@ -967,6 +967,7 @@ export interface About {
   } | null;
   timeline?:
     | {
+        category: 'experience' | 'education' | 'certification' | 'award';
         period: string;
         title: string;
         description?: string | null;
@@ -1033,6 +1034,7 @@ export interface AboutSelect<T extends boolean = true> {
   timeline?:
     | T
     | {
+        category?: T;
         period?: T;
         title?: T;
         description?: T;

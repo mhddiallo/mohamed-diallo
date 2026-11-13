@@ -34,6 +34,19 @@ export const About: GlobalConfig = {
       },
       fields: [
         {
+          name: 'category',
+          type: 'select',
+          required: true,
+          defaultValue: 'experience',
+          label: { fr: 'Catégorie', en: 'Category' },
+          options: [
+            { value: 'experience', label: { fr: 'Expérience professionnelle', en: 'Work experience' } },
+            { value: 'education', label: { fr: 'Formation', en: 'Education' } },
+            { value: 'certification', label: { fr: 'Certification', en: 'Certification' } },
+            { value: 'award', label: { fr: 'Distinction', en: 'Award' } },
+          ],
+        },
+        {
           type: 'row',
           fields: [
             { name: 'period', type: 'text', required: true, label: { fr: 'Période', en: 'Period' } },
