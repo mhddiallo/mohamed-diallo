@@ -51,6 +51,34 @@ export const Settings: GlobalConfig = {
       admin: { description: { fr: 'Ex. : À bientôt, ba beneen yoon.', en: 'E.g. See you soon, ba beneen yoon.' } },
     },
     {
+      name: 'ticker',
+      type: 'array',
+      label: { fr: 'Bandeau défilant — ce que je fais en ce moment', en: 'Scrolling banner — what I’m doing now' },
+      labels: {
+        singular: { fr: 'Élément', en: 'Item' },
+        plural: { fr: 'Éléments', en: 'Items' },
+      },
+      admin: {
+        description: {
+          fr: 'Affiché tout en haut de toutes les pages. Laissez vide pour masquer le bandeau.',
+          en: 'Shown at the very top of every page. Leave empty to hide the banner.',
+        },
+        initCollapsed: true,
+      },
+      fields: [
+        {
+          name: 'text',
+          type: 'text',
+          required: true,
+          localized: true,
+          label: { fr: 'Texte', en: 'Text' },
+          admin: {
+            description: { fr: 'Ex. : 📖 Je lis The Productive Muslim', en: 'E.g. 📖 Reading The Productive Muslim' },
+          },
+        },
+      ],
+    },
+    {
       name: 'socials',
       type: 'array',
       label: { fr: 'Liens (réseaux, e-mail…)', en: 'Links (socials, email…)' },

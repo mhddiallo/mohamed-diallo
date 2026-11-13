@@ -1907,3 +1907,55 @@ html.anim .tile-goals:not(.is-visible) .ring-value {
   color: var(--nuit);
 }
 
+
+/* Scrolling "now" banner */
+.ticker {
+  position: relative;
+  z-index: 2001;
+  overflow: hidden;
+  background: var(--nuit);
+  color: var(--sable);
+  font-family: var(--display);
+  font-size: 0.82rem;
+  font-weight: 600;
+  white-space: nowrap;
+  mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+}
+.ticker-track {
+  display: flex;
+  width: max-content;
+}
+.ticker ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 9px 0;
+}
+.ticker li {
+  display: flex;
+  align-items: center;
+}
+.ticker li::after {
+  content: '✦';
+  margin: 0 28px;
+  color: var(--ocre);
+  font-size: 0.7rem;
+}
+@keyframes ticker-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+html.anim .ticker-track {
+  animation: ticker-scroll linear infinite;
+}
+.ticker:hover .ticker-track {
+  animation-play-state: paused;
+}
+/* Without animation, the banner can be scrolled by hand */
+html:not(.anim) .ticker {
+  overflow-x: auto;
+}
+html:not(.anim) .ticker ul[aria-hidden] {
+  display: none;
+}

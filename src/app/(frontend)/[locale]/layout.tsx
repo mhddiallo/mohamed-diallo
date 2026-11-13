@@ -5,6 +5,7 @@ import type { ReactNode } from 'react'
 import { AltLinkProvider } from '@/components/AltLink'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { Nav } from '@/components/Nav'
+import { Ticker } from '@/components/Ticker'
 import { ParticleNetwork } from '@/components/motion/ParticleNetwork'
 import { RevealObserver } from '@/components/motion/RevealObserver'
 import { defaultLocale, href, isLocale, locales, t } from '@/lib/i18n'
@@ -66,6 +67,10 @@ export default async function LocaleLayout({ children, params }: Props) {
           </a>
           <div className="frame">
             <ParticleNetwork />
+            <Ticker
+              items={(settings.ticker ?? []).map((t) => t.text).filter(Boolean)}
+              label={locale === 'fr' ? 'En ce moment' : 'Right now'}
+            />
             <header className="site-header">
               <Link href={href(locale)} className="brand">
                 <span className="monogram" aria-hidden>

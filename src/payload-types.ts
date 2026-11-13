@@ -994,6 +994,18 @@ export interface Setting {
    * E.g. See you soon, ba beneen yoon.
    */
   footerMessage?: string | null;
+  /**
+   * Shown at the very top of every page. Leave empty to hide the banner.
+   */
+  ticker?:
+    | {
+        /**
+         * E.g. 📖 Reading The Productive Muslim
+         */
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
   socials?:
     | {
         label: string;
@@ -1038,6 +1050,12 @@ export interface SettingsSelect<T extends boolean = true> {
   intro?: T;
   manifesto?: T;
   footerMessage?: T;
+  ticker?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
   socials?:
     | T
     | {
