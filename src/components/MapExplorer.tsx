@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic'
 import { useMemo, useState } from 'react'
 import { placeKey, type Place, type Region } from './mapTypes'
+import { CountUp } from './motion/CountUp'
 
 const TravelMap = dynamic(() => import('./TravelMap'), {
   ssr: false,
@@ -61,11 +62,15 @@ export function MapExplorer({
         <div className="stat-cards">
           <div className="stat-card stat-laterite">
             <span>{labels.countries}</span>
-            <strong>{countryCount}</strong>
+            <strong>
+              <CountUp value={countryCount} duration={700} />
+            </strong>
           </div>
           <div className="stat-card stat-baobab">
             <span>{labels.cities}</span>
-            <strong>{cityCount}</strong>
+            <strong>
+              <CountUp value={cityCount} duration={700} />
+            </strong>
           </div>
         </div>
       </section>

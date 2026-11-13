@@ -3,6 +3,8 @@ import Link from 'next/link'
 import type { Goal, GoalDomain } from '@/payload-types'
 import { href, t, type Locale } from '@/lib/i18n'
 import { payload } from '@/lib/payload'
+import { CountUp } from '@/components/motion/CountUp'
+import { Interpolate } from '@/components/motion/Interpolate'
 
 export const dynamic = 'force-dynamic'
 
@@ -75,7 +77,12 @@ export default async function GoalsPage({ params, searchParams }: Props) {
           </nav>
 
           <div className="goal-summary">
-            <p className="goal-summary-title">{dict.goals.achievedCount(achieved, goals.length)}</p>
+            <p className="goal-summary-title">
+              <Interpolate
+                text={dict.goals.achievedCount}
+                values={{ done: <CountUp value={achieved} />, total: goals.length }}
+              />
+            </p>
             <div className="bar bar-ocre">
               <span style={{ width: `${goals.length ? (achieved / goals.length) * 100 : 0}%` }} />
             </div>

@@ -5,6 +5,9 @@ import { payload } from '@/lib/payload'
 import { getPlaces } from '@/lib/places'
 import { ArticleCard, NoteItem } from '@/components/Cards'
 import { MiniMap } from '@/components/MiniMap'
+import { CountUp } from '@/components/motion/CountUp'
+import { FloatingDots } from '@/components/motion/FloatingDots'
+import { Interpolate, SplitLetters } from '@/components/motion/Interpolate'
 
 export const dynamic = 'force-dynamic'
 
@@ -28,14 +31,15 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
   return (
     <>
       <section className="hero">
+        <FloatingDots count={40} seed={11} />
         <div className="hero-name">
           {settings.kicker && <span className="kicker">{settings.kicker}</span>}
-          <h1>
-            {first}
+          <h1 className="hero-title">
+            <SplitLetters text={first} />
             {rest.length > 0 && (
               <>
                 <br />
-                {rest.join(' ')}
+                <SplitLetters text={rest.join(' ')} offset={first.length} />
               </>
             )}
           </h1>
@@ -51,9 +55,20 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
 
       {places.length > 0 && (
         <section className="map-banner">
+          <FloatingDots
+            count={26}
+            seed={29}
+            colors={['var(--ocre)', 'var(--sable)']}
+            className="on-dark"
+          />
           <div className="map-banner-text">
             <span className="label">{dict.home.mapLabel}</span>
-            <h2>{dict.home.mapTitle(countries, cities)}</h2>
+            <h2>
+              <Interpolate
+                text={dict.home.mapTitle}
+                values={{ countries: <CountUp value={countries} />, cities: <CountUp value={cities} /> }}
+              />
+            </h2>
             <Link href={href(locale, 'map')} className="button-light">
               {dict.home.exploreMap} →
             </Link>

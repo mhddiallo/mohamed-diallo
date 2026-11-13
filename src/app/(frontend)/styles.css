@@ -133,7 +133,9 @@ button {
   background: var(--page);
   border-radius: 28px;
   overflow: clip;
-  box-shadow: 0 1px 0 rgb(42 31 23 / 0.04), 0 30px 60px -40px rgb(42 31 23 / 0.35);
+  box-shadow:
+    0 1px 0 rgb(42 31 23 / 0.04),
+    0 30px 60px -40px rgb(42 31 23 / 0.35);
 }
 main {
   padding: 40px clamp(20px, 5vw, 64px) 96px;
@@ -633,7 +635,9 @@ main {
   background: var(--surface);
   border-radius: var(--radius);
   overflow: hidden;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
 }
 .card:hover {
   transform: translateY(-3px);
@@ -881,7 +885,7 @@ main {
   color: var(--sable);
   font-family: var(--display);
 }
-.stat-card span {
+.stat-card > span {
   font-size: 0.75rem;
   font-weight: 650;
 }
@@ -1192,4 +1196,209 @@ main {
   margin: 8px 0 0;
   font-size: 0.85rem;
   color: var(--laterite-deep);
+}
+
+/* =====================================================================
+   Animations — active only when JS has added html.anim, i.e. when the
+   visitor has not asked their device to reduce motion.
+   ===================================================================== */
+
+/* Scroll reveal */
+/* Same list as REVEAL_SELECTOR in components/motion/RevealObserver.tsx */
+html.anim
+  :is(
+    .page-head,
+    .section-head,
+    .section-title,
+    .map-banner,
+    .card,
+    .note,
+    .timeline li,
+    .year-card,
+    .goal-summary,
+    .goal-group,
+    .goal,
+    .interest,
+    .stat-card,
+    .about-photo,
+    .prose > *
+  ) {
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+html.anim
+  :is(
+    .page-head,
+    .section-head,
+    .section-title,
+    .map-banner,
+    .card,
+    .note,
+    .timeline li,
+    .year-card,
+    .goal-summary,
+    .goal-group,
+    .goal,
+    .interest,
+    .stat-card,
+    .about-photo,
+    .prose > *
+  ):not(.is-visible) {
+  opacity: 0;
+  transform: translateY(22px);
+}
+/* Keep the hover lift working once revealed */
+html.anim .card.is-visible {
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+html.anim .about-photo:not(.is-visible) {
+  transform: translateY(22px) rotate(-2deg);
+}
+
+/* Hero: name rises letter by letter, then the rest fades in */
+@keyframes letter-rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.45em) rotate(4deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.split-letters > span {
+  display: inline-block;
+}
+html.anim .split-letters > span {
+  animation: letter-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(120ms + var(--i) * 45ms);
+}
+html.anim .hero .kicker {
+  animation: fade-up 0.6s ease both;
+}
+html.anim .hero-text > * {
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+html.anim .hero-text > :nth-child(1) {
+  animation-delay: 0.55s;
+}
+html.anim .hero-text > :nth-child(2) {
+  animation-delay: 0.7s;
+}
+html.anim .hero-text > :nth-child(3) {
+  animation-delay: 0.85s;
+}
+
+/* Counters keep their width while counting */
+.count-up {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Map: cities pop in, the home banner's cities pulse */
+@keyframes dot-pop {
+  0% {
+    transform: scale(0);
+  }
+  70% {
+    transform: scale(1.35);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes pulse-ring {
+  0% {
+    stroke-width: 1.5;
+    stroke-opacity: 0.9;
+  }
+  100% {
+    stroke-width: 18;
+    stroke-opacity: 0;
+  }
+}
+.leaflet-container path {
+  transition: fill 0.5s ease;
+}
+html.anim .city-dot {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: dot-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+html.anim .pulse-ring {
+  animation: pulse-ring 2.4s ease-out infinite;
+}
+
+/* Goals: bars fill when their card appears */
+.bar span {
+  transform-origin: left center;
+}
+html.anim .goal .bar span,
+html.anim .goal-summary .bar span {
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.25s;
+}
+html.anim .goal:not(.is-visible) .bar span,
+html.anim .goal-summary:not(.is-visible) .bar span {
+  transform: scaleX(0);
+}
+
+/* Floating dots (decor) */
+.hero {
+  position: relative;
+}
+.hero > :not(.floating-dots) {
+  position: relative;
+  z-index: 1;
+}
+.map-banner-text {
+  z-index: 2;
+}
+.floating-dots {
+  position: absolute;
+  inset: -20px -24px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.map-banner .floating-dots {
+  inset: 0;
+  z-index: 1;
+}
+.floating-dots span {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--dot-color);
+}
+.floating-dots span.ring {
+  background: transparent;
+  border: 1.5px solid var(--dot-color);
+}
+@keyframes float-dot {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  33% {
+    transform: translate(var(--dx), calc(var(--dy) * -1));
+  }
+  66% {
+    transform: translate(calc(var(--dx) * -0.6), var(--dy));
+  }
+}
+html.anim .floating-dots span {
+  animation: float-dot linear infinite;
 }
