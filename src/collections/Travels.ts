@@ -72,10 +72,15 @@ export const Travels: CollectionConfig = {
         {
           name: 'year',
           type: 'number',
-          required: true,
           min: 1950,
           max: 2100,
           label: { fr: 'Année', en: 'Year' },
+          admin: {
+            description: {
+              fr: 'Laissez vide pour votre pays (affiché comme « Chez moi », sans date).',
+              en: 'Leave empty for your home country (shown as “Home”, without a date).',
+            },
+          },
         },
       ],
     },

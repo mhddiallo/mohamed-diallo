@@ -18,7 +18,7 @@ export async function getPlaces(locale: Locale): Promise<Place[]> {
     countryName: countryName(d.country, locale),
     numeric: countryNumeric(d.country),
     continent: continentOf(d.country),
-    year: d.year,
+    year: d.year ?? null,
     lat: d.latitude,
     lng: d.longitude,
     note: d.note,

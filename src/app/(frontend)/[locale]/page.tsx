@@ -51,7 +51,8 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
   const countries = new Set(places.map((d) => d.country)).size
   const cities = new Set(places.map((d) => `${d.country}-${d.city}`)).size
   const continents = new Set(places.map((d) => d.continent).filter(Boolean)).size
-  const lastTrip = [...places].sort((a, b) => b.year - a.year)[0]
+  const dated = places.filter((p): p is typeof p & { year: number } => p.year !== null)
+  const lastTrip = [...dated].sort((a, b) => b.year - a.year)[0]
 
   // "Right now"
   const reading = interests.docs.find((i) => i.kind === 'book' && i.status === 'current')
@@ -71,7 +72,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
 
   // Travels timeline (most recent first)
   const byYear = new Map<number, string[]>()
-  for (const pl of [...places].sort((a, b) => b.year - a.year)) {
+  for (const pl of [...dated].sort((a, b) => b.year - a.year)) {
     const list = byYear.get(pl.year) ?? []
     if (!list.includes(pl.city)) list.push(pl.city)
     byYear.set(pl.year, list)

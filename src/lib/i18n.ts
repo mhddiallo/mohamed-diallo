@@ -91,6 +91,7 @@ const dictionaries = {
       regionNear: 'Afrique & Europe',
       regionWorld: 'Monde',
       byYear: 'Voyages par année',
+      home: 'Chez moi',
       empty: 'Aucun lieu pour le moment.',
     },
     interests: {
@@ -180,6 +181,7 @@ const dictionaries = {
       regionNear: 'Africa & Europe',
       regionWorld: 'World',
       byYear: 'Trips by year',
+      home: 'Home',
       empty: 'No places yet.',
     },
     interests: {

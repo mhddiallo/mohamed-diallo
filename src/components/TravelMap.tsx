@@ -80,7 +80,8 @@ export default function TravelMap({
     const first = new Map<string, number>()
     for (const p of places) {
       if (!p.numeric) continue
-      first.set(p.numeric, Math.min(first.get(p.numeric) ?? Infinity, p.year))
+      // Home country (no year) lights up first
+      first.set(p.numeric, Math.min(first.get(p.numeric) ?? Infinity, p.year ?? 0))
     }
     return [...first.entries()].sort((a, b) => a[1] - b[1]).map(([n]) => n)
   }, [places])
@@ -159,8 +160,9 @@ export default function TravelMap({
       if (p.numeric && !visitedNumeric.has(p.numeric)) continue
       const key = placeKey(p)
       const existing = map.get(key)
-      if (existing) existing.years.push(p.year)
-      else map.set(key, { ...p, years: [p.year] })
+      const years = p.year ? [p.year] : []
+      if (existing) existing.years.push(...years)
+      else map.set(key, { ...p, years })
     }
     return [...map.values()]
   }, [visible, visitedNumeric])
@@ -241,7 +243,8 @@ export default function TravelMap({
                       <Tooltip direction="top" offset={[0, -8]} className="city-tooltip">
                         <strong>{c.city}</strong>
                         <span>
-                          {c.countryName} · {[...new Set(c.years)].sort().join(', ')}
+                          {c.countryName}
+                          {c.years.length > 0 && ` · ${[...new Set(c.years)].sort().join(', ')}`}
                         </span>
                       </Tooltip>
                     )}

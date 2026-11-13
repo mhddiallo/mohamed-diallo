@@ -18,6 +18,7 @@ type Labels = {
   regionNear: string
   regionWorld: string
   byYear: string
+  home: string
 }
 
 export function MapExplorer({
@@ -36,7 +37,10 @@ export function MapExplorer({
   const [selected, setSelected] = useState<(Place & { years: number[] }) | null>(null)
 
   const years = useMemo(
-    () => [...new Set(places.map((p) => p.year))].sort((a, b) => a - b),
+    () =>
+      [...new Set(places.map((p) => p.year).filter((y): y is number => y !== null))].sort(
+        (a, b) => a - b,
+      ),
     [places],
   )
   const visible = year ? places.filter((p) => p.year === year) : places
@@ -46,10 +50,12 @@ export function MapExplorer({
 
   // Trips grouped by year (most recent first)
   const byYear = useMemo(() => {
+    // Home country (no year) comes first, then years from most recent
     const groups = new Map<number, Place[]>()
     for (const p of visible) {
-      if (!groups.has(p.year)) groups.set(p.year, [])
-      groups.get(p.year)!.push(p)
+      const y = p.year ?? Infinity
+      if (!groups.has(y)) groups.set(y, [])
+      groups.get(y)!.push(p)
     }
     return [...groups.entries()].sort((a, b) => b[0] - a[0])
   }, [visible])
@@ -117,7 +123,11 @@ export function MapExplorer({
             <button className="map-card-close" aria-label="×" onClick={() => setSelected(null)}>
               ×
             </button>
-            <span className="map-card-year">{[...new Set(selected.years)].sort().join(' · ')}</span>
+            <span className="map-card-year">
+              {selected.years.length > 0
+                ? [...new Set(selected.years)].sort().join(' · ')
+                : labels.home}
+            </span>
             <strong>{selected.city}</strong>
             <span className="map-card-meta">
               {selected.countryName}
@@ -132,14 +142,14 @@ export function MapExplorer({
         <div className="year-grid">
           {byYear.map(([y, list]) => (
             <article key={y} className="year-card">
-              <h3>{y}</h3>
+              <h3>{y === Infinity ? labels.home : y}</h3>
               <ul>
                 {list.map((p) => (
                   <li key={p.id}>
                     <button
                       className="trip"
                       onClick={() => {
-                        setSelected({ ...p, years: [p.year] })
+                        setSelected({ ...p, years: p.year ? [p.year] : [] })
                         window.scrollTo({ top: 0, behavior: 'smooth' })
                       }}
                     >

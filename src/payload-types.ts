@@ -528,7 +528,10 @@ export interface Travel {
     | 'YE'
     | 'ZM'
     | 'ZW';
-  year: number;
+  /**
+   * Leave empty for your home country (shown as “Home”, without a date).
+   */
+  year?: number | null;
   note?: string | null;
   latitude?: number | null;
   longitude?: number | null;

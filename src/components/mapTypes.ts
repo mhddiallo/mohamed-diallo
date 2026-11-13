@@ -7,7 +7,8 @@ export type Place = {
   countryName: string
   numeric?: string
   continent?: string
-  year: number
+  /** Null for the home country (no date). */
+  year: number | null
   lat?: number | null
   lng?: number | null
   note?: string | null
