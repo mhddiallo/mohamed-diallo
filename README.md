@@ -23,7 +23,7 @@ Site personnel bilingue (français / anglais) de Mohamed Diallo, avec ses sectio
 | Objectifs | `/fr/objectifs` | `/en/goals` |
 | Notes | `/fr/notes` | `/en/notes` |
 
-`/` redirige vers `/fr` ou `/en` selon la langue du navigateur. Le bouton FR/EN garde le visiteur sur la page équivalente (y compris pour un article, dont l'adresse diffère selon la langue).
+`/` redirige vers `/en` : le site est en anglais par défaut, et le visiteur passe en français avec le bouton EN/FR. Le bouton FR/EN garde le visiteur sur la page équivalente (y compris pour un article, dont l'adresse diffère selon la langue).
 
 ## Utiliser l'administration
 

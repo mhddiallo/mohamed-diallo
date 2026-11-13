@@ -1,6 +1,7 @@
-export const locales = ['fr', 'en'] as const
+export const locales = ['en', 'fr'] as const
 export type Locale = (typeof locales)[number]
-export const defaultLocale: Locale = 'fr'
+/** Language of the public site when none is chosen ("/" redirects here). */
+export const defaultLocale: Locale = 'en'
 
 export const isLocale = (value: string): value is Locale =>
   (locales as readonly string[]).includes(value)

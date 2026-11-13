@@ -5,11 +5,9 @@ import { defaultLocale, isLocale, routeKeyFromSegment } from './lib/i18n'
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // "/" -> /fr or /en depending on the browser language
+  // "/" -> English by default; visitors can switch to French with the FR/EN toggle
   if (pathname === '/') {
-    const accept = request.headers.get('accept-language') || ''
-    const preferred = accept.toLowerCase().startsWith('en') ? 'en' : defaultLocale
-    return NextResponse.redirect(new URL(`/${preferred}`, request.url))
+    return NextResponse.redirect(new URL(`/${defaultLocale}`, request.url))
   }
 
   // Translated URLs: /fr/a-propos -> internal route /fr/about

@@ -5,7 +5,7 @@ import type { ReactNode } from 'react'
 import { AltLinkProvider } from '@/components/AltLink'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { Nav } from '@/components/Nav'
-import { href, isLocale, locales, t } from '@/lib/i18n'
+import { defaultLocale, href, isLocale, locales, t } from '@/lib/i18n'
 import { payload } from '@/lib/payload'
 import '../styles.css'
 
@@ -30,7 +30,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     metadataBase: new URL(process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'),
     title: { default: name, template: `%s — ${name}` },
     description: settings.tagline || undefined,
-    alternates: { languages: Object.fromEntries(locales.map((l) => [l, `/${l}`])) },
+    alternates: {
+      languages: {
+        ...Object.fromEntries(locales.map((l) => [l, `/${l}`])),
+        'x-default': `/${defaultLocale}`,
+      },
+    },
     openGraph: { siteName: name, locale: locale === 'fr' ? 'fr_FR' : 'en_US', type: 'website' },
   }
 }
