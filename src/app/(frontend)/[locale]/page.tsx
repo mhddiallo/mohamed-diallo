@@ -2,7 +2,7 @@ import Link from 'next/link'
 import type { Goal, Interest, Theme } from '@/payload-types'
 import type { Locale } from '@/lib/i18n'
 import { formatDate, href, t } from '@/lib/i18n'
-import { asMedia, mediaUrl, payload } from '@/lib/payload'
+import { asMedia, mediaUrl, payload, published } from '@/lib/payload'
 import { getPlaces } from '@/lib/places'
 import { RichText } from '@/components/RichText'
 import { MiniMap } from '@/components/MiniMap'
@@ -28,8 +28,15 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
   const [settings, about, articles, notes, places, interests, goals, themes] = await Promise.all([
     p.findGlobal({ slug: 'settings', locale }),
     p.findGlobal({ slug: 'about', locale, depth: 1 }),
-    p.find({ collection: 'articles', locale, limit: 1, sort: '-publishedAt', depth: 1 }),
-    p.find({ collection: 'notes', locale, limit: 1, sort: '-publishedAt' }),
+    p.find({
+      collection: 'articles',
+      locale,
+      where: published,
+      limit: 1,
+      sort: '-publishedAt',
+      depth: 1,
+    }),
+    p.find({ collection: 'notes', locale, where: published, limit: 1, sort: '-publishedAt' }),
     getPlaces(locale),
     p.find({ collection: 'interests', locale, limit: 12, sort: '-date', depth: 1 }),
     p.find({ collection: 'goals', locale, where: { year: { equals: year } }, limit: 100, depth: 1 }),

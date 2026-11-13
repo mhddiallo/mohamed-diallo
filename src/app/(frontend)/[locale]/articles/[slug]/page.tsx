@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation'
 import { cache } from 'react'
 import type { Theme } from '@/payload-types'
 import { formatDate, href, otherLocale, t, type Locale } from '@/lib/i18n'
-import { asMedia, mediaUrl, payload, readingTime } from '@/lib/payload'
+import { asMedia, mediaUrl, payload, published, readingTime } from '@/lib/payload'
 import { RichText } from '@/components/RichText'
 import { SetAltLink } from '@/components/AltLink'
 
@@ -17,7 +17,7 @@ const getArticle = cache(async (locale: Locale, slug: string) => {
   const res = await p.find({
     collection: 'articles',
     locale,
-    where: { slug: { equals: decodeURIComponent(slug) } },
+    where: { and: [published, { slug: { equals: decodeURIComponent(slug) } }] },
     limit: 1,
     depth: 1,
   })

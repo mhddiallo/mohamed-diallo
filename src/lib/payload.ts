@@ -4,6 +4,12 @@ import type { Media } from '@/payload-types'
 
 export const payload = () => getPayload({ config })
 
+/**
+ * The Local API bypasses access control, so public pages must filter out
+ * drafts themselves (articles and notes have drafts / autosave).
+ */
+export const published = { _status: { equals: 'published' } } as const
+
 /** Returns a media object when the relation was populated, otherwise null. */
 export const asMedia = (value: unknown): Media | null =>
   value && typeof value === 'object' && 'url' in value ? (value as Media) : null

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import type { Where } from 'payload'
 import { href, t, type Locale } from '@/lib/i18n'
-import { payload } from '@/lib/payload'
+import { payload, published } from '@/lib/payload'
 import { ArticleCard } from '@/components/Cards'
 
 export const dynamic = 'force-dynamic'
@@ -25,7 +25,9 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
 
   const themes = await p.find({ collection: 'themes', locale, limit: 100, sort: 'order' })
   const active = themes.docs.find((th) => th.slug === themeSlug)
-  const where: Where = active ? { theme: { equals: active.id } } : {}
+  const where: Where = active
+    ? { and: [published, { theme: { equals: active.id } }] }
+    : published
   const articles = await p.find({
     collection: 'articles',
     locale,

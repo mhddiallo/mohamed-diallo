@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { t, type Locale } from '@/lib/i18n'
-import { payload } from '@/lib/payload'
+import { payload, published } from '@/lib/payload'
 import { NoteItem } from '@/components/Cards'
 
 export const dynamic = 'force-dynamic'
@@ -18,6 +18,7 @@ export default async function NotesPage({ params }: Props) {
   const notes = await (await payload()).find({
     collection: 'notes',
     locale,
+    where: published,
     sort: '-publishedAt',
     limit: 200,
   })
