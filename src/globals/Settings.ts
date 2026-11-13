@@ -32,6 +32,18 @@ export const Settings: GlobalConfig = {
       label: { fr: 'Introduction (page d’accueil)', en: 'Introduction (home page)' },
     },
     {
+      name: 'manifesto',
+      type: 'textarea',
+      localized: true,
+      label: { fr: 'Phrase manifeste (accueil)', en: 'Manifesto line (home page)' },
+      admin: {
+        description: {
+          fr: 'Une phrase forte, affichée en très grand sur l’accueil.',
+          en: 'A strong sentence, shown very large on the home page.',
+        },
+      },
+    },
+    {
       name: 'footerMessage',
       type: 'text',
       localized: true,

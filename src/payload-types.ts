@@ -987,6 +987,10 @@ export interface Setting {
   tagline?: string | null;
   intro?: string | null;
   /**
+   * A strong sentence, shown very large on the home page.
+   */
+  manifesto?: string | null;
+  /**
    * E.g. See you soon, ba beneen yoon.
    */
   footerMessage?: string | null;
@@ -1032,6 +1036,7 @@ export interface SettingsSelect<T extends boolean = true> {
   kicker?: T;
   tagline?: T;
   intro?: T;
+  manifesto?: T;
   footerMessage?: T;
   socials?:
     | T
