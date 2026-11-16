@@ -23,7 +23,9 @@ export default async function GoalsPage({ params, searchParams }: Props) {
   const { year: yearParam } = await searchParams
   const dict = t(locale)
 
-  const all = await (await payload()).find({
+  const all = await (
+    await payload()
+  ).find({
     collection: 'goals',
     locale,
     limit: 1000,
@@ -70,24 +72,30 @@ export default async function GoalsPage({ params, searchParams }: Props) {
         <>
           <nav className="segmented year-switch" aria-label={dict.goals.title}>
             {years.map((y) => (
-              <Link key={y} href={`${base}?year=${y}`} aria-current={y === year ? 'true' : undefined}>
+              <Link
+                key={y}
+                href={`${base}?year=${y}`}
+                aria-current={y === year ? 'true' : undefined}
+              >
                 {y}
               </Link>
             ))}
           </nav>
 
-          <div className="goal-summary">
-            <p className="goal-summary-title">
-              <Interpolate
-                text={dict.goals.achievedCount}
-                values={{ done: <CountUp value={achieved} />, total: goals.length }}
-              />
-            </p>
-            <div className="bar bar-ocre">
-              <span style={{ width: `${goals.length ? (achieved / goals.length) * 100 : 0}%` }} />
+          {achieved > 0 && (
+            <div className="goal-summary">
+              <p className="goal-summary-title">
+                <Interpolate
+                  text={dict.goals.achievedCount}
+                  values={{ done: <CountUp value={achieved} />, total: goals.length }}
+                />
+              </p>
+              <div className="bar bar-ocre">
+                <span style={{ width: `${goals.length ? (achieved / goals.length) * 100 : 0}%` }} />
+              </div>
+              {breakdown && <p className="goal-summary-sub">{breakdown}</p>}
             </div>
-            {breakdown && <p className="goal-summary-sub">{breakdown}</p>}
-          </div>
+          )}
 
           <div className="goal-groups">
             {sortedGroups.map(({ domain, goals }) => (
