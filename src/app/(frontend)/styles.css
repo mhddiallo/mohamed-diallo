@@ -2096,3 +2096,139 @@ html:not(.anim) .ticker {
 html:not(.anim) .ticker ul[aria-hidden] {
   display: none;
 }
+
+/* ---------- Strava runs ---------- */
+.run-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 18px;
+}
+.run-card {
+  display: flex;
+  flex-direction: column;
+  padding: 18px 20px 20px;
+  border-radius: 22px;
+  background: var(--surface);
+  color: var(--ink);
+  text-decoration: none;
+  box-shadow: 0 1px 0 rgb(42 31 23 / 0.04), 0 18px 36px -28px rgb(42 31 23 / 0.45);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.run-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 1px 0 rgb(42 31 23 / 0.04), 0 26px 44px -26px rgb(42 31 23 / 0.5);
+}
+.run-date {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.run-route {
+  width: 100%;
+  height: auto;
+  margin: 6px 0 14px;
+  background-image: radial-gradient(circle, color-mix(in srgb, var(--muted) 45%, transparent) 1px, transparent 1.4px);
+  background-size: 18px 18px;
+  background-position: center;
+}
+.run-path,
+.run-path-glow {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.run-path {
+  stroke: var(--laterite);
+  stroke-width: 2.2;
+}
+.run-path-glow {
+  stroke: color-mix(in srgb, var(--laterite) 22%, transparent);
+  stroke-width: 7;
+}
+.run-start {
+  fill: var(--surface);
+  stroke: #5f7a5a;
+  stroke-width: 1.6;
+}
+.run-end {
+  fill: var(--nuit);
+  stroke: color-mix(in srgb, var(--nuit) 20%, transparent);
+  stroke-width: 5;
+}
+html.anim .run-path {
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+  animation: draw-route 1.8s ease forwards;
+}
+@keyframes draw-route {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.run-distance {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.run-distance span {
+  margin-left: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+.run-name {
+  margin: 8px 0 4px;
+  font-family: var(--display);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.run-stats {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.run-totals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 36px;
+}
+.run-totals p {
+  margin: 0;
+  padding: 14px 22px;
+  border-radius: 18px;
+  background: var(--laterite);
+  color: var(--sable);
+  font-family: var(--display);
+  font-weight: 600;
+}
+.run-totals strong {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-right: 4px;
+}
+.strava-credit {
+  margin: 16px 0 0;
+  text-align: right;
+  font-family: var(--display);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.strava-credit a {
+  color: #fc4c02;
+  text-decoration: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  html.anim .run-path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}

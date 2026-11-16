@@ -4,6 +4,8 @@ import type { Locale } from '@/lib/i18n'
 import { formatDate, href, t } from '@/lib/i18n'
 import { asMedia, mediaUrl, payload, published } from '@/lib/payload'
 import { getPlaces } from '@/lib/places'
+import { getRuns } from '@/lib/strava'
+import { RunCard, StravaCredit } from '@/components/RunCard'
 import { RichText } from '@/components/RichText'
 import { MiniMap } from '@/components/MiniMap'
 import { CountUp } from '@/components/motion/CountUp'
@@ -25,23 +27,31 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
   const p = await payload()
   const year = new Date().getFullYear()
 
-  const [settings, about, articles, notes, places, interests, goals, themes] = await Promise.all([
-    p.findGlobal({ slug: 'settings', locale }),
-    p.findGlobal({ slug: 'about', locale, depth: 1 }),
-    p.find({
-      collection: 'articles',
-      locale,
-      where: published,
-      limit: 1,
-      sort: '-publishedAt',
-      depth: 1,
-    }),
-    p.find({ collection: 'notes', locale, where: published, limit: 1, sort: '-publishedAt' }),
-    getPlaces(locale),
-    p.find({ collection: 'interests', locale, limit: 12, sort: '-date', depth: 1 }),
-    p.find({ collection: 'goals', locale, where: { year: { equals: year } }, limit: 100, depth: 1 }),
-    p.find({ collection: 'themes', locale, limit: 20, sort: 'order' }),
-  ])
+  const [settings, about, articles, notes, places, interests, goals, themes, runs] =
+    await Promise.all([
+      p.findGlobal({ slug: 'settings', locale }),
+      p.findGlobal({ slug: 'about', locale, depth: 1 }),
+      p.find({
+        collection: 'articles',
+        locale,
+        where: published,
+        limit: 1,
+        sort: '-publishedAt',
+        depth: 1,
+      }),
+      p.find({ collection: 'notes', locale, where: published, limit: 1, sort: '-publishedAt' }),
+      getPlaces(locale),
+      p.find({ collection: 'interests', locale, limit: 12, sort: '-date', depth: 1 }),
+      p.find({
+        collection: 'goals',
+        locale,
+        where: { year: { equals: year } },
+        limit: 100,
+        depth: 1,
+      }),
+      p.find({ collection: 'themes', locale, limit: 20, sort: 'order' }),
+      getRuns(3),
+    ])
 
   const name = settings.siteName || 'Mohamed Diallo'
   const [first, ...rest] = name.split(' ')
@@ -79,7 +89,8 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
   }
 
   const article = articles.docs[0]
-  const articleTheme = article && typeof article.theme === 'object' ? (article.theme as Theme) : null
+  const articleTheme =
+    article && typeof article.theme === 'object' ? (article.theme as Theme) : null
   const articleCover = article ? mediaUrl(asMedia(article.cover), 'card') : null
   const note = notes.docs[0]
 
@@ -335,6 +346,24 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
           </article>
         )}
       </section>
+
+      {/* ---------- Strava runs ---------- */}
+      {runs.length > 0 && (
+        <section className="section">
+          <div className="section-head">
+            <h2>{dict.runs.latest}</h2>
+            <Link href={`${href(locale, 'interests')}?tab=running`} className="arrow-link">
+              {dict.runs.all} →
+            </Link>
+          </div>
+          <div className="run-grid">
+            {runs.map((run) => (
+              <RunCard key={run.id} run={run} locale={locale} />
+            ))}
+          </div>
+          <StravaCredit locale={locale} />
+        </section>
+      )}
 
       {/* ---------- Travels timeline ---------- */}
       {byYear.size > 0 && (

@@ -3,14 +3,17 @@ import type { CSSProperties } from 'react'
 import Link from 'next/link'
 import { formatDate, href, t, type Locale } from '@/lib/i18n'
 import { asMedia, mediaUrl, payload } from '@/lib/payload'
+import { getRuns } from '@/lib/strava'
+import { RunCard, StravaCredit } from '@/components/RunCard'
 
 export const dynamic = 'force-dynamic'
 
-type Tab = 'book' | 'screen' | 'activity'
-const tabs: Tab[] = ['book', 'screen', 'activity']
+type Tab = 'book' | 'screen' | 'running' | 'activity'
+const tabs: Tab[] = ['book', 'screen', 'running', 'activity']
 const kindsForTab: Record<Tab, string[]> = {
   book: ['book'],
   screen: ['film', 'series'],
+  running: [],
   activity: ['activity'],
 }
 
@@ -30,7 +33,9 @@ export default async function InterestsPage({ params, searchParams }: Props) {
   const tab: Tab = tabs.includes(tabParam as Tab) ? (tabParam as Tab) : 'book'
   const dict = t(locale)
 
-  const items = await (await payload()).find({
+  const items = await (
+    await payload()
+  ).find({
     collection: 'interests',
     locale,
     where: { kind: { in: kindsForTab[tab] } },
@@ -41,7 +46,11 @@ export default async function InterestsPage({ params, searchParams }: Props) {
 
   // Group by the year the item was read/watched. "Up next" goes last.
   const groupOf = (item: (typeof items.docs)[number]): string =>
-    item.status === 'wishlist' ? 'wishlist' : item.date ? String(new Date(item.date).getUTCFullYear()) : 'undated'
+    item.status === 'wishlist'
+      ? 'wishlist'
+      : item.date
+        ? String(new Date(item.date).getUTCFullYear())
+        : 'undated'
   const rank = (key: string) => (key === 'wishlist' ? -2 : key === 'undated' ? -1 : Number(key))
 
   const groups = new Map<string, typeof items.docs>()
@@ -59,7 +68,11 @@ export default async function InterestsPage({ params, searchParams }: Props) {
   const shown = year ? [year] : keys
   const base = href(locale, 'interests')
   const groupLabel = (key: string) =>
-    key === 'wishlist' ? dict.interests.status.wishlist : key === 'undated' ? dict.interests.undated : key
+    key === 'wishlist'
+      ? dict.interests.status.wishlist
+      : key === 'undated'
+        ? dict.interests.undated
+        : key
 
   return (
     <>
@@ -70,87 +83,163 @@ export default async function InterestsPage({ params, searchParams }: Props) {
 
       <nav className="chips" aria-label={dict.interests.title}>
         {tabs.map((key) => (
-          <Link key={key} href={`${base}?tab=${key}`} aria-current={tab === key ? 'true' : undefined}>
+          <Link
+            key={key}
+            href={`${base}?tab=${key}`}
+            aria-current={tab === key ? 'true' : undefined}
+          >
             {dict.interests.tabs[key]}
           </Link>
         ))}
       </nav>
 
-      {years.length > 1 && (
-        <nav className="chips year-filter" aria-label={dict.interests.filterByYear}>
-          <Link href={`${base}?tab=${tab}`} aria-current={!year ? 'true' : undefined} scroll={false}>
-            {dict.interests.allYears}
-          </Link>
-          {years.map((y) => (
-            <Link key={y} href={`${base}?tab=${tab}&year=${y}`} aria-current={year === y ? 'true' : undefined} scroll={false}>
-              {y}
-              <span className="chip-count">{groups.get(y)!.length}</span>
-            </Link>
-          ))}
-        </nav>
-      )}
-
-      {items.docs.length === 0 ? (
-        <p className="empty">{dict.interests.empty}</p>
+      {tab === 'running' ? (
+        <RunsSection locale={locale} />
       ) : (
-        shown.map((key) => (
-          <section key={key} className="interest-year" aria-labelledby={`y-${key}`}>
-            <h2 className="interest-year-head" id={`y-${key}`}>
-              <span>{groupLabel(key)}</span>
-              <span className="interest-year-count">{groups.get(key)!.length}</span>
-            </h2>
-            <ul className="interest-list">
-              {groups.get(key)!.map((item) => {
-                const cover = mediaUrl(asMedia(item.cover), 'thumbnail')
-                return (
-                  <li key={item.id} className="interest">
-                    {cover ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={cover} alt="" className="interest-cover" loading="lazy" />
-                    ) : (
-                      <div className="interest-cover placeholder" aria-hidden>
-                        {item.kind === 'book' ? '📖' : item.kind === 'activity' ? '✦' : '🎬'}
-                      </div>
-                    )}
-                    <div className="interest-body">
-                      <p className="meta">
-                        <span className={`pill pill-${item.status}`}>
-                          {dict.interests.status[item.status]}
-                        </span>
-                        {tab === 'screen' && <span className="tag">{dict.interests.kinds[item.kind]}</span>}
-                        {item.date && <span>{formatDate(item.date, locale, groupOf(item) === 'wishlist' ? { month: 'long', year: 'numeric' } : { month: 'long' })}</span>}
-                      </p>
-                      <h3>
-                        {item.link ? (
-                          <a href={item.link} target="_blank" rel="noopener">
-                            {item.title}
-                          </a>
+        <>
+          {years.length > 1 && (
+            <nav className="chips year-filter" aria-label={dict.interests.filterByYear}>
+              <Link
+                href={`${base}?tab=${tab}`}
+                aria-current={!year ? 'true' : undefined}
+                scroll={false}
+              >
+                {dict.interests.allYears}
+              </Link>
+              {years.map((y) => (
+                <Link
+                  key={y}
+                  href={`${base}?tab=${tab}&year=${y}`}
+                  aria-current={year === y ? 'true' : undefined}
+                  scroll={false}
+                >
+                  {y}
+                  <span className="chip-count">{groups.get(y)!.length}</span>
+                </Link>
+              ))}
+            </nav>
+          )}
+
+          {items.docs.length === 0 ? (
+            <p className="empty">{dict.interests.empty}</p>
+          ) : (
+            shown.map((key) => (
+              <section key={key} className="interest-year" aria-labelledby={`y-${key}`}>
+                <h2 className="interest-year-head" id={`y-${key}`}>
+                  <span>{groupLabel(key)}</span>
+                  <span className="interest-year-count">{groups.get(key)!.length}</span>
+                </h2>
+                <ul className="interest-list">
+                  {groups.get(key)!.map((item) => {
+                    const cover = mediaUrl(asMedia(item.cover), 'thumbnail')
+                    return (
+                      <li key={item.id} className="interest">
+                        {cover ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={cover} alt="" className="interest-cover" loading="lazy" />
                         ) : (
-                          item.title
+                          <div className="interest-cover placeholder" aria-hidden>
+                            {item.kind === 'book' ? '📖' : item.kind === 'activity' ? '✦' : '🎬'}
+                          </div>
                         )}
-                      </h3>
-                      {(item.creator || item.releaseYear) && (
-                        <p className="creator">
-                          {[item.creator, item.releaseYear].filter(Boolean).join(' · ')}
-                        </p>
-                      )}
-                      {item.rating ? (
-                        <p className="rating" aria-label={`${item.rating}/5`}>
-                          <span className="stars" style={{ '--fill': `${(item.rating / 5) * 100}%` } as CSSProperties}>
-                            ★★★★★
-                          </span>
-                          <span className="rating-value">{item.rating.toLocaleString(locale)}</span>
-                        </p>
-                      ) : null}
-                      {item.comment && <p className="comment">{item.comment}</p>}
-                    </div>
-                  </li>
-                )
-              })}
-            </ul>
-          </section>
-        ))
+                        <div className="interest-body">
+                          <p className="meta">
+                            <span className={`pill pill-${item.status}`}>
+                              {dict.interests.status[item.status]}
+                            </span>
+                            {tab === 'screen' && (
+                              <span className="tag">{dict.interests.kinds[item.kind]}</span>
+                            )}
+                            {item.date && (
+                              <span>
+                                {formatDate(
+                                  item.date,
+                                  locale,
+                                  groupOf(item) === 'wishlist'
+                                    ? { month: 'long', year: 'numeric' }
+                                    : { month: 'long' },
+                                )}
+                              </span>
+                            )}
+                          </p>
+                          <h3>
+                            {item.link ? (
+                              <a href={item.link} target="_blank" rel="noopener">
+                                {item.title}
+                              </a>
+                            ) : (
+                              item.title
+                            )}
+                          </h3>
+                          {(item.creator || item.releaseYear) && (
+                            <p className="creator">
+                              {[item.creator, item.releaseYear].filter(Boolean).join(' · ')}
+                            </p>
+                          )}
+                          {item.rating ? (
+                            <p className="rating" aria-label={`${item.rating}/5`}>
+                              <span
+                                className="stars"
+                                style={{ '--fill': `${(item.rating / 5) * 100}%` } as CSSProperties}
+                              >
+                                ★★★★★
+                              </span>
+                              <span className="rating-value">
+                                {item.rating.toLocaleString(locale)}
+                              </span>
+                            </p>
+                          ) : null}
+                          {item.comment && <p className="comment">{item.comment}</p>}
+                        </div>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </section>
+            ))
+          )}
+        </>
       )}
+    </>
+  )
+}
+
+async function RunsSection({ locale }: { locale: Locale }) {
+  const dict = t(locale)
+  const runs = await getRuns(60)
+  if (runs.length === 0) return <p className="empty">{dict.runs.empty}</p>
+
+  const totalKm = runs.reduce((sum, r) => sum + r.distance, 0) / 1000
+  const groups = new Map<string, typeof runs>()
+  for (const run of runs) {
+    const y = run.date.slice(0, 4)
+    groups.set(y, [...(groups.get(y) ?? []), run])
+  }
+
+  return (
+    <>
+      <div className="run-totals">
+        <p>
+          <strong>{Math.round(totalKm).toLocaleString(locale)}</strong> {dict.runs.totalKm}
+        </p>
+        <p>
+          <strong>{runs.length}</strong> {dict.runs.count}
+        </p>
+      </div>
+      {[...groups.entries()].map(([y, list]) => (
+        <section key={y} className="interest-year">
+          <h2 className="interest-year-head">
+            <span>{y}</span>
+            <span className="interest-year-count">{list.length}</span>
+          </h2>
+          <div className="run-grid">
+            {list.map((run) => (
+              <RunCard key={run.id} run={run} locale={locale} />
+            ))}
+          </div>
+        </section>
+      ))}
+      <StravaCredit locale={locale} />
     </>
   )
 }

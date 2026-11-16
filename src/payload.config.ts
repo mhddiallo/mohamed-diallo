@@ -17,6 +17,7 @@ import { Travels } from './collections/Travels'
 import { Users } from './collections/Users'
 import { About } from './globals/About'
 import { Settings } from './globals/Settings'
+import { Strava } from './globals/Strava'
 import { migrations } from './migrations'
 
 const filename = fileURLToPath(import.meta.url)
@@ -43,7 +44,7 @@ export default buildConfig({
     fallback: true,
   },
   collections: [Articles, Themes, Notes, Travels, Interests, Goals, GoalDomains, Media, Users],
-  globals: [About, Settings],
+  globals: [About, Settings, Strava],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },

@@ -23,6 +23,8 @@ services:
       DATABASE_URL: postgres://${POSTGRES_USER:-site}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-site}
       PAYLOAD_SECRET: ${PAYLOAD_SECRET}
       NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL:-https://mohamed-diallo.com}
+      STRAVA_CLIENT_ID: ${STRAVA_CLIENT_ID:-}
+      STRAVA_CLIENT_SECRET: ${STRAVA_CLIENT_SECRET:-}
     volumes:
       - media:/app/media
     depends_on:

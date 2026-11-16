@@ -3,6 +3,7 @@ import * as migration_20261113_090410_add_manifesto from './20261113_090410_add_
 import * as migration_20261113_201831_add_ticker from './20261113_201831_add_ticker';
 import * as migration_20261113_215034_optional_travel_year from './20261113_215034_optional_travel_year';
 import * as migration_20261113_224729_about_timeline_category from './20261113_224729_about_timeline_category';
+import * as migration_20261116_095739_strava from './20261116_095739_strava';
 
 export const migrations = [
   {
@@ -28,6 +29,11 @@ export const migrations = [
   {
     up: migration_20261113_224729_about_timeline_category.up,
     down: migration_20261113_224729_about_timeline_category.down,
-    name: '20261113_224729_about_timeline_category'
+    name: '20261113_224729_about_timeline_category',
+  },
+  {
+    up: migration_20261116_095739_strava.up,
+    down: migration_20261116_095739_strava.down,
+    name: '20261116_095739_strava'
   },
 ];

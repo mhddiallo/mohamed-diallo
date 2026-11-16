@@ -104,10 +104,12 @@ export interface Config {
   globals: {
     about: About;
     settings: Setting;
+    strava: Strava;
   };
   globalsSelect: {
     about: AboutSelect<false> | AboutSelect<true>;
     settings: SettingsSelect<false> | SettingsSelect<true>;
+    strava: StravaSelect<false> | StravaSelect<true>;
   };
   locale: 'fr' | 'en';
   widgets: {
@@ -1024,6 +1026,24 @@ export interface Setting {
   createdAt?: string | null;
 }
 /**
+ * To connect or reconnect your Strava account, open https://mohamed-diallo.com/api/globals/strava/connect while logged in to the admin. Your public runs then appear on the site automatically.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "strava".
+ */
+export interface Strava {
+  id: number;
+  enabled?: boolean | null;
+  athleteName?: string | null;
+  connectedAt?: string | null;
+  athleteId?: string | null;
+  accessToken?: string | null;
+  refreshToken?: string | null;
+  expiresAt?: number | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "about_select".
  */
@@ -1068,6 +1088,22 @@ export interface SettingsSelect<T extends boolean = true> {
         url?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "strava_select".
+ */
+export interface StravaSelect<T extends boolean = true> {
+  enabled?: T;
+  athleteName?: T;
+  connectedAt?: T;
+  athleteId?: T;
+  accessToken?: T;
+  refreshToken?: T;
+  expiresAt?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
