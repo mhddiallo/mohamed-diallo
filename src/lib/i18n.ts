@@ -78,6 +78,8 @@ const dictionaries = {
       intro: 'Ce que j’écris, classé par thème.',
       all: 'Tous',
       empty: 'Aucun article pour le moment.',
+      themes: 'Thèmes',
+      emptyTheme: 'Pas encore d’article dans ce thème.',
       emptyTitle: 'Les premiers articles arrivent',
       emptyText:
         'J’écrirai ici sur l’identité numérique, l’interopérabilité des services publics, les paiements et l’inclusion financière, avec des pistes concrètes pour le Sénégal.',
@@ -191,6 +193,8 @@ const dictionaries = {
       intro: 'What I write, by theme.',
       all: 'All',
       empty: 'No articles yet.',
+      themes: 'Themes',
+      emptyTheme: 'No articles in this theme yet.',
       emptyTitle: 'The first articles are on their way',
       emptyText:
         'I will write here about digital identity, interoperable public services, payments and financial inclusion, with concrete ideas for Senegal.',

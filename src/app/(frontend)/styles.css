@@ -2232,3 +2232,110 @@ html.anim .run-path {
     stroke-dashoffset: 0;
   }
 }
+
+/* ---------- Articles: theme sidebar ---------- */
+.articles-layout {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+.theme-nav {
+  position: sticky;
+  top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.theme-nav-title {
+  margin: 0 0 10px 14px;
+  font-family: var(--display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+.theme-nav a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-radius: 12px;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--ink);
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.theme-nav a:hover {
+  background: color-mix(in srgb, var(--nuit) 7%, transparent);
+}
+.theme-nav a[aria-current='page'] {
+  background: var(--nuit);
+  color: var(--sable);
+}
+.theme-nav a svg {
+  flex: none;
+  color: var(--laterite);
+}
+.theme-nav a[aria-current='page'] svg {
+  color: var(--ocre);
+}
+.theme-count {
+  margin-left: auto;
+  font-size: 0.78rem;
+  font-weight: 600;
+  opacity: 0.55;
+}
+.theme-head {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 28px;
+}
+.theme-head-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--laterite);
+  color: var(--sable);
+}
+.theme-head h2 {
+  margin: 0 0 4px;
+}
+.theme-head p {
+  margin: 0;
+  color: var(--muted);
+}
+.articles-main .grid {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+@media (max-width: 860px) {
+  .articles-layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .theme-nav {
+    position: static;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 6px;
+    margin: 0 calc(-1 * clamp(20px, 5vw, 64px));
+    padding: 0 clamp(20px, 5vw, 64px) 4px;
+    scrollbar-width: none;
+  }
+  .theme-nav-title {
+    display: none;
+  }
+  .theme-nav a {
+    flex: none;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 0.88rem;
+    background: var(--surface);
+  }
+}

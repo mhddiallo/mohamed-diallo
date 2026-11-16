@@ -231,6 +231,26 @@ export interface Media {
 export interface Theme {
   id: number;
   name: string;
+  icon?:
+    | (
+        | 'sparkles'
+        | 'landmark'
+        | 'fingerprint'
+        | 'network'
+        | 'wallet'
+        | 'code'
+        | 'briefcase'
+        | 'trending-up'
+        | 'target'
+        | 'heart-pulse'
+        | 'plane'
+        | 'globe'
+        | 'book-open'
+        | 'lightbulb'
+        | 'compass'
+        | 'layers'
+      )
+    | null;
   description?: string | null;
   order?: number | null;
   /**
@@ -751,6 +771,7 @@ export interface ArticlesSelect<T extends boolean = true> {
  */
 export interface ThemesSelect<T extends boolean = true> {
   name?: T;
+  icon?: T;
   description?: T;
   order?: T;
   slug?: T;

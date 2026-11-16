@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { anyone } from './access'
 import { slugField } from './fields'
+import { themeIconOptions } from '../lib/themeIcons'
 
 export const Themes: CollectionConfig = {
   slug: 'themes',
@@ -22,6 +23,13 @@ export const Themes: CollectionConfig = {
       required: true,
       localized: true,
       label: { fr: 'Nom', en: 'Name' },
+    },
+    {
+      name: 'icon',
+      type: 'select',
+      defaultValue: 'layers',
+      options: themeIconOptions,
+      label: { fr: 'Icône', en: 'Icon' },
     },
     {
       name: 'description',
