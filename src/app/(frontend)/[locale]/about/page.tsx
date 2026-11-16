@@ -35,7 +35,7 @@ export default async function AboutPage({ params }: Props) {
           {about.headline && <p className="lede">{about.headline}</p>}
         </section>
 
-        <RichText data={about.content} />
+        <RichText data={about.content} locale={locale} />
 
         {categories.map((category) => {
           const steps = (about.timeline ?? []).filter((step) => (step.category ?? 'experience') === category)

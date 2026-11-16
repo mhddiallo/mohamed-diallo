@@ -80,7 +80,7 @@ export default async function ArticlePage({ params }: Props) {
         // eslint-disable-next-line @next/next/no-img-element
         <img src={mediaUrl(cover, 'large') || ''} alt={cover.alt || ''} className="article-cover" />
       )}
-      <RichText data={article.content} />
+      <RichText data={article.content} locale={locale} />
     </article>
   )
 }

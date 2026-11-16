@@ -307,7 +307,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
             <span className="quote-mark" aria-hidden>
               “
             </span>
-            <RichText data={note.content} className="prose note-quote" />
+            <RichText data={note.content} className="prose note-quote" locale={locale} />
             <Link href={href(locale, 'notes')} className="arrow-link">
               {dict.home.allNotes} →
             </Link>

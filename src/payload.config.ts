@@ -1,5 +1,6 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { BlocksFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
+import { VideoBlock } from './blocks/Video'
 import { en } from '@payloadcms/translations/languages/en'
 import { fr } from '@payloadcms/translations/languages/fr'
 import path from 'path'
@@ -45,7 +46,12 @@ export default buildConfig({
   },
   collections: [Articles, Themes, Notes, Travels, Interests, Goals, GoalDomains, Media, Users],
   globals: [About, Settings, Strava],
-  editor: lexicalEditor(),
+  editor: lexicalEditor({
+    features: ({ defaultFeatures }) => [
+      ...defaultFeatures,
+      BlocksFeature({ blocks: [VideoBlock] }),
+    ],
+  }),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },
   db: postgresAdapter({
