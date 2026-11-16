@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { EmptyState } from '@/components/EmptyState'
 import Link from 'next/link'
 import type { Where } from 'payload'
 import { href, t, type Locale } from '@/lib/i18n'
@@ -25,9 +26,7 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
 
   const themes = await p.find({ collection: 'themes', locale, limit: 100, sort: 'order' })
   const active = themes.docs.find((th) => th.slug === themeSlug)
-  const where: Where = active
-    ? { and: [published, { theme: { equals: active.id } }] }
-    : published
+  const where: Where = active ? { and: [published, { theme: { equals: active.id } }] } : published
   const articles = await p.find({
     collection: 'articles',
     locale,
@@ -46,7 +45,7 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
         <p className="lede">{active?.description || dict.articles.intro}</p>
       </section>
 
-      {themes.docs.length > 0 && (
+      {themes.docs.length > 0 && (active || articles.docs.length > 0) && (
         <nav className="chips" aria-label={dict.articles.title}>
           <Link href={base} aria-current={!active ? 'true' : undefined}>
             {dict.articles.all}
@@ -64,7 +63,12 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
       )}
 
       {articles.docs.length === 0 ? (
-        <p className="empty">{dict.articles.empty}</p>
+        <EmptyState
+          locale={locale}
+          icon="✍️"
+          title={dict.articles.emptyTitle}
+          text={dict.articles.emptyText}
+        />
       ) : (
         <div className="grid">
           {articles.docs.map((a) => (

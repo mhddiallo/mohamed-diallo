@@ -13,6 +13,7 @@ export const REVEAL_SELECTOR = [
   '.manifesto',
   '.travel-strip li',
   '.contact-cta',
+  '.empty-state',
   '.card',
   '.note',
   '.timeline li',

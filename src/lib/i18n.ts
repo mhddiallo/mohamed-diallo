@@ -78,6 +78,9 @@ const dictionaries = {
       intro: 'Ce que j’écris, classé par thème.',
       all: 'Tous',
       empty: 'Aucun article pour le moment.',
+      emptyTitle: 'Les premiers articles arrivent',
+      emptyText:
+        'J’écrirai ici sur l’identité numérique, l’interopérabilité des services publics, les paiements et l’inclusion financière, avec des pistes concrètes pour le Sénégal.',
       readingTime: (min: number) => `${min} min de lecture`,
       back: 'Tous les articles',
     },
@@ -122,12 +125,16 @@ const dictionaries = {
       title: 'Notes',
       intro: 'Des pensées, au fil de l’eau.',
       empty: 'Aucune note pour le moment.',
+      emptyTitle: 'Les premières notes arrivent',
+      emptyText:
+        'Des pensées courtes, des idées en chantier et des choses apprises en chemin. Moins abouties qu’un article, plus spontanées.',
     },
     about: {
       title: 'À propos',
       timeline: 'Parcours',
       categories: { experience: 'Expérience professionnelle', education: 'Formation', certification: 'Certifications', award: 'Distinctions' },
     },
+    emptyState: { soon: 'Bientôt', meanwhile: 'En attendant, explorez le reste du carnet :' },
     footer: 'Tous droits réservés.',
     footerMessage: 'À bientôt, ba beneen yoon.',
     notFound: 'Page introuvable.',
@@ -175,6 +182,9 @@ const dictionaries = {
       intro: 'What I write, by theme.',
       all: 'All',
       empty: 'No articles yet.',
+      emptyTitle: 'The first articles are on their way',
+      emptyText:
+        'I will write here about digital identity, interoperable public services, payments and financial inclusion, with concrete ideas for Senegal.',
       readingTime: (min: number) => `${min} min read`,
       back: 'All articles',
     },
@@ -219,12 +229,16 @@ const dictionaries = {
       title: 'Notes',
       intro: 'Thoughts, as they come.',
       empty: 'No notes yet.',
+      emptyTitle: 'The first notes are on their way',
+      emptyText:
+        'Short thoughts, ideas in progress and things learned along the way. Less polished than an article, more spontaneous.',
     },
     about: {
       title: 'About',
       timeline: 'Background',
       categories: { experience: 'Work experience', education: 'Education', certification: 'Certifications', award: 'Awards & honours' },
     },
+    emptyState: { soon: 'Coming soon', meanwhile: 'Meanwhile, explore the rest of the notebook:' },
     footer: 'All rights reserved.',
     footerMessage: 'See you soon, ba beneen yoon.',
     notFound: 'Page not found.',
