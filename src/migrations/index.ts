@@ -5,6 +5,7 @@ import * as migration_20261113_215034_optional_travel_year from './20261113_2150
 import * as migration_20261113_224729_about_timeline_category from './20261113_224729_about_timeline_category';
 import * as migration_20261116_095739_strava from './20261116_095739_strava';
 import * as migration_20261116_144744_theme_icon from './20261116_144744_theme_icon';
+import * as migration_20261116_204536_localized_cover from './20261116_204536_localized_cover';
 
 export const migrations = [
   {
@@ -40,6 +41,11 @@ export const migrations = [
   {
     up: migration_20261116_144744_theme_icon.up,
     down: migration_20261116_144744_theme_icon.down,
-    name: '20261116_144744_theme_icon'
+    name: '20261116_144744_theme_icon',
+  },
+  {
+    up: migration_20261116_204536_localized_cover.up,
+    down: migration_20261116_204536_localized_cover.down,
+    name: '20261116_204536_localized_cover'
   },
 ];

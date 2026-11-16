@@ -43,6 +43,7 @@ export const Articles: CollectionConfig = {
       name: 'cover',
       type: 'upload',
       relationTo: 'media',
+      localized: true,
       label: { fr: 'Image de couverture', en: 'Cover image' },
     },
     {
